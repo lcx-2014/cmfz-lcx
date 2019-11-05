@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.BookDao">
+  <select id="selectAll" resultType="com.baizhi.entity.Book">
+ 	 select * from dbook	
+  </select>
+  <select id="selectScond" resultType="com.baizhi.entity.CateGroy">
+  select id,name,parantId,levels from dCateGroy where levels=2 	 
+  </select>
+  <insert id="insertBook" parameterType="com.baizhi.entity.Book">
+  insert into dbook values(#{id},#{dname},#{author},#{cover},#{press},#{pressdate,jdbcType=DATE},
+  #{edition},#{printdate,jdbcType=DATE},#{impression},#{isbn},#{wordNum},#{pageNum},#{dsize},
+  #{paper},#{pack},#{price},#{dprice},#{createdate,jdbcType=DATE},#{editorRecommend},#{contentAbstract},
+  #{authorAbstract},#{director},#{mediaCommentary},#{sale,jdbcType=NUMERIC},#{stock},#{categoryId})
+  </insert>
+  <select id="selectBook" resultType="com.baizhi.entity.Book">
+  select * from dbook where id=#{id}
+  </select>
+  <update id="updateBook" parameterType="com.baizhi.entity.Book">
+ update dbook set dname=#{dname},author=#{author},cover=#{cover,jdbcType=VARCHAR},press=#{press},pressdate=#{pressdate,jdbcType=DATE},
+  edition=#{edition},printdate=#{printdate,jdbcType=DATE},impression=#{impression},isbn=#{isbn},wordNum=#{wordNum},pageNum=#{pageNum},dsize=#{dsize},
+  paper=#{paper},pack=#{pack},price=#{price},dPrice=#{dprice},createdate=#{createdate,jdbcType=DATE},editorRecommend=#{editorRecommend},
+  contentAbstract=#{contentAbstract},authorAbstract=#{authorAbstract},director=#{director},mediaCommentary=#{mediaCommentary},sale=#{sale,jdbcType=NUMERIC},stock=#{stock},
+  categoryId=#{categoryId} where id=#{id}
+  </update>
+  <select id="selectByname" resultType="com.baizhi.entity.Book">
+  select * from dbook where dname like #{0}
+  </select>
+  <select id="selectByauthor" resultType="com.baizhi.entity.Book">
+  select * from dbook where author like #{0}
+  </select>
+  <select id="selectBypress" resultType="com.baizhi.entity.Book">
+  select * from dbook where press like #{0}
+  </select>
+  <delete id="deleteBook">
+   delete from dbook where id=#{0}
+  </delete>
+  <!-- ===================前台的dao的映射文件 -->
+  <select id="randomBook" resultType="com.baizhi.entity.Book">
+   select * from (select * from dbook d order by dbms_random.value()) where rownum &lt;3
+  </select>
+  <!-- 热卖图书 -->
+  <select id="hotBook" resultType="com.baizhi.entity.Book">
+ select * from (select * from dbook order by sale desc) where rownum &lt;8
+  </select>
+  <select id="newBook" resultType="com.baizhi.entity.Book">
+  select * from (select * from dbook order by pressdate desc) where rownum &lt;5
+  </select>
+  <select id="newhotBook" resultType="com.baizhi.entity.Book">
+ select * from (select * from (select * from dbook order by pressdate desc) order by sale desc) where rownum &lt;6
+  </select>
+  <resultMap type="com.baizhi.entity.CateGroy" id="rm1">
+		<id column="fid" property="id"/>
+		<result column="fname" property="name"/>
+		<result column="fparantId" property="parantId"/>
+		<result column="flevels" property="levels"/>
+		<collection property="categroys" ofType="com.baizhi.entity.CateGroy">
+		<id column="sid" property="id"/>
+		<result column="sname" property="name"/>
+		<result column="sparantId" property="parantId"/>
+		<result column="slevels" property="levels"/>
+		</collection>
+	</resultMap>
+  <select id="categroyBook" resultMap="rm1">
+   select f.id fid ,f.name fname ,f.parantId fparantId ,f.levels flevels,
+        s.id sid ,s.name sname ,s.parantId sparantId ,s.levels sLevels
+        from dcategroy f left join dcategroy s on f.name=s.parantId
+       	where f.levels=1
+  </select>
+  <update id="updateBooks" parameterType="com.baizhi.entity.Book">
+	update dbook set sale=#{sale,jdbcType=NUMERIC},stock=#{stock,jdbcType=NUMERIC} where id=#{id}
+	</update>
+</mapper>

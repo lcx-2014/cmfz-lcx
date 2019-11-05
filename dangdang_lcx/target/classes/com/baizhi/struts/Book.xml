@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "struts-2.3.dtd" >
+<struts>
+	<package name="BookAction"  extends="struts-default">
+	<!-- 配置拦截器 -->
+	<interceptors>
+		<interceptor name="adminInterceptor" class="com.baizhi.interceptor.AdminInterceptor"></interceptor>
+		<!-- 声明拦截器栈 -->
+		<interceptor-stack name="myStack">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="adminInterceptor"></interceptor-ref>
+		</interceptor-stack>
+	</interceptors>
+	<!--  配合全局跳转  -->
+	<global-results>
+			<result name="loginNo" type="redirect">/index.jsp</result>
+	</global-results>
+		<action name="showBook" class="com.baizhi.action.BookAction" method="showBook">
+		<!--  引入拦截器栈  -->
+		<interceptor-ref name="myStack"></interceptor-ref>
+		<result name="showBookOk">/back/book/show.jsp</result>
+		</action>
+		<action name="showSecond" class="com.baizhi.action.BookAction" method="showSecond">
+		<result name="showSecondOk">/back/book/add.jsp</result>
+		</action>
+		<action name="addBook" class="com.baizhi.action.BookAction" method="addBook">
+		<interceptor-ref name="myStack"></interceptor-ref>
+		<result name="addBookOk" type="redirectAction">showBook</result>
+		</action>
+		<action name="selectBook" class="com.baizhi.action.BookAction" method="selectBook">
+		<result name="selectBookOk">/back/book/update.jsp</result>
+		</action>
+		<action name="updateBook" class="com.baizhi.action.BookAction" method="updateBook">
+		<result name="updateOk" type="redirectAction">showBook</result>
+		</action>
+		<action name="blurqueryBook" class="com.baizhi.action.BookAction" method="blurqueryBook">
+		<result name="blurOk">/back/book/show.jsp</result>
+		</action>
+		<action name="delete" class="com.baizhi.action.BookAction" method="delete">
+		<result name="deleteOk" type="redirectAction">showBook</result>
+		</action>
+		<!-- ==========以下是前台book的回显 -->
+		<action name="random" class="com.baizhi.action.BookAction" method="random">
+		<result name="randomOk">/front/main/main.jsp</result>
+		</action>
+	</package>
+</struts>

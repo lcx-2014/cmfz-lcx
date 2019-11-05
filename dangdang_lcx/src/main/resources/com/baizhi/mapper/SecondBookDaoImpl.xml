@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.SecondBookDao">
+<resultMap type="com.baizhi.entity.CateGroy" id="rm3">
+			<id column="did" property="id"/>
+			<result column="dname" property="name"/>
+			<result column="dparantid" property="parantId"/>
+			<result column="dlevels" property="levels"/>
+		<collection property="books" ofType="com.baizhi.entity.Book">
+			<id column="eid" property="id"/>
+			<result column="ename" property="dname"/>
+			<result column="eauthor" property="author"/>
+			<result column="ecover" property="cover"/>
+			<result column="epress" property="press"/>
+			<result column="epressdate" property="pressdate"/>
+			<result column="eedition" property="edition"/>
+			<result column="eprintdate" property="printdate"/>
+			<result column="eimpression" property="impression"/>
+			<result column="eisbn" property="isbn"/>
+			<result column="ewordnum" property="wordNum"/>
+			<result column="epagenum" property="pageNum"/>
+			<result column="edsize" property="dsize"/>
+			<result column="epaper" property="paper"/>
+			<result column="epack" property="pack"/>
+			<result column="eprice" property="price"/>
+			<result column="edprice" property="dprice"/>
+			<result column="ecreatedate" property="createdate"/>
+			<result column="eeditorrecommend" property="editorRecommend"/>
+			<result column="econtentAbstract" property="contentAbstract"/>
+			<result column="authorAbstract" property="authorAbstract"/>
+			<result column="edirector" property="director"/>
+			<result column="emediacommentary" property="mediaCommentary"/>
+			<result column="esale" property="sale"/>
+			<result column="estock" property="stock"/>
+			<result column="ecategory" property="categoryId"/>
+		</collection>
+</resultMap>
+	<select id="SecondBook" resultMap="rm3">
+	select * from (select p.*,rownum rn from (select d.id did,d.name dname,d.parantid dparantid,d.levels dlevels
+ 		,e.id eid,e.dname ename,e.author eauthor,e.cover ecover,e.press epress
+ 		,e.pressdate epressdate,e.edition eedition,e.printdate eprintdate,
+ 		e.impression eimpression,e.isbn eisbn,e.wordnum ewordnum,e.pagenum epagenum,
+ 		e.dsize edsize,e.paper epaper,e.pack epack,e.price eprice,e.dprice edprice,e.createdate ecreatedate,
+ 		e.editorrecommend eeditorrecommend,e.contentAbstract econtentAbstract,
+ 		e.authorAbstract authorAbstract,e.director edirector,e.mediacommentary emediacommentary,
+ 		e.sale esale,e.stock estock,e.categoryid ecategory
+ 		from dcategroy d left join dbook e on d.name=e.categoryId where d.parantId=#{type}
+) p where rownum &lt;#{pb.end}) where rn between #{pb.begin} and #{pb.end}
+	</select>
+	<resultMap type="com.baizhi.entity.CateGroy" id="rm4">
+			<id column="did" property="id"/>
+			<result column="dname" property="name"/>
+			<result column="dparantid" property="parantId"/>
+			<result column="dlevels" property="levels"/>
+		<collection property="books" ofType="com.baizhi.entity.Book">
+			<id column="eid" property="id"/>
+			<result column="ename" property="dname"/>
+			<result column="eauthor" property="author"/>
+			<result column="ecover" property="cover"/>
+			<result column="epress" property="press"/>
+			<result column="epressdate" property="pressdate"/>
+			<result column="eedition" property="edition"/>
+			<result column="eprintdate" property="printdate"/>
+			<result column="eimpression" property="impression"/>
+			<result column="eisbn" property="isbn"/>
+			<result column="ewordnum" property="wordNum"/>
+			<result column="epagenum" property="pageNum"/>
+			<result column="edsize" property="dsize"/>
+			<result column="epaper" property="paper"/>
+			<result column="epack" property="pack"/>
+			<result column="eprice" property="price"/>
+			<result column="edprice" property="dprice"/>
+			<result column="ecreatedate" property="createdate"/>
+			<result column="eeditorrecommend" property="editorRecommend"/>
+			<result column="econtentAbstract" property="contentAbstract"/>
+			<result column="authorAbstract" property="authorAbstract"/>
+			<result column="edirector" property="director"/>
+			<result column="emediacommentary" property="mediaCommentary"/>
+			<result column="esale" property="sale"/>
+			<result column="estock" property="stock"/>
+			<result column="ecategory" property="categoryId"/>
+		</collection>
+</resultMap>
+	<select id="selectSecond" resultMap="rm4">
+	select * from (select  d.*,rownum rn  from (select d.id did,d.name dname,d.parantid dparantid,d.levels dlevels
+ 		,e.id eid,e.dname ename,e.author eauthor,e.cover ecover,e.press epress
+ 		,e.pressdate epressdate,e.edition eedition,e.printdate eprintdate,
+ 		e.impression eimpression,e.isbn eisbn,e.wordnum ewordnum,e.pagenum epagenum,
+ 		e.dsize edsize,e.paper epaper,e.pack epack,e.price eprice,e.dprice edprice,e.createdate ecreatedate,
+ 		e.editorrecommend eeditorrecommend,e.contentAbstract econtentAbstract,
+ 		e.authorAbstract authorAbstract,e.director edirector,e.mediacommentary emediacommentary,
+ 		e.sale esale,e.stock estock,e.categoryid ecategory
+ 		from dcategroy d left join dbook e on d.name=e.categoryId where d.name=#{name}) d where rownum &lt;#{pb.end}
+) where rn between #{pb.begin} and #{pb.end}
+
+	</select>
+	<select id="selectCateGroy" resultType="com.baizhi.entity.CateGroy">
+	select * from dcategroy where parantId=#{0}
+	</select>
+	<select id="selectCount" resultType="Integer">
+	select count(*) from(select d.id did,d.name dname,d.parantid dparantid,d.levels dlevels
+ 		,e.id eid,e.dname ename,e.author eauthor,e.cover ecover,e.press epress
+ 		,e.pressdate epressdate,e.edition eedition,e.printdate eprintdate,
+ 		e.impression eimpression,e.isbn eisbn,e.wordnum ewordnum,e.pagenum epagenum,
+ 		e.dsize edsize,e.paper epaper,e.pack epack,e.price eprice,e.dprice edprice,e.createdate ecreatedate,
+ 		e.editorrecommend eeditorrecommend,e.contentAbstract econtentAbstract,
+ 		e.authorAbstract authorAbstract,e.director edirector,e.mediacommentary emediacommentary,
+ 		e.sale esale,e.stock estock,e.categoryid ecategory
+ 		from dcategroy d left join dbook e on d.name=e.categoryId where d.parantId=#{0}
+) 
+	</select>
+	<select id="queryCount" resultType="Integer">
+	select count(* ) from(select d.id did,d.name dname,d.parantid dparantid,d.levels dlevels
+ 		,e.id eid,e.dname ename,e.author eauthor,e.cover ecover,e.press epress
+ 		,e.pressdate epressdate,e.edition eedition,e.printdate eprintdate,
+ 		e.impression eimpression,e.isbn eisbn,e.wordnum ewordnum,e.pagenum epagenum,
+ 		e.dsize edsize,e.paper epaper,e.pack epack,e.price eprice,e.dprice edprice,e.createdate ecreatedate,
+ 		e.editorrecommend eeditorrecommend,e.contentAbstract econtentAbstract,
+ 		e.authorAbstract authorAbstract,e.director edirector,e.mediacommentary emediacommentary,
+ 		e.sale esale,e.stock estock,e.categoryid ecategory
+ 		from dcategroy d left join dbook e on d.name=e.categoryId where d.name=#{0})
+	</select>
+	<!-- ============以上是二级展示页面的内容 -->
+	<select id="selectDetalisBook" resultType="com.baizhi.entity.Book">
+	select * from dbook where id=#{0}
+	</select>
+</mapper>

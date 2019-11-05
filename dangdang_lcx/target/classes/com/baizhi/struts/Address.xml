@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "struts-2.3.dtd" >
+<struts>
+<!--  配置拦截器  -->
+
+	<package name="addressAction" extends="struts-default">
+	<interceptors>
+		<interceptor name="userInterceptor" class="com.baizhi.interceptor.UserInterceptor"></interceptor>
+		<!-- 声明拦截器栈 -->
+		<interceptor-stack name="myStack">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="userInterceptor"></interceptor-ref>
+		</interceptor-stack>
+	</interceptors>
+	<!--  配合全局跳转  -->
+	<global-results>
+			<result name="userNo" type="redirect">/front/user/login_form.jsp</result>
+			<result name="codeNo" type="redirect">/front/user/verify_form.jsp</result>
+	</global-results>
+	<action name="panduanSign" class="com.baizhi.action.AddressAction" method="panduanSign">
+	<!--  引入拦截器栈  -->
+	<interceptor-ref name="myStack"></interceptor-ref>
+	<result name="userOk">/front/order/address_form.jsp</result>
+	</action>
+	<action name="getByAddId" class="com.baizhi.action.AddressAction" method="getByAddId">
+	<result name="ByAddIdOk">/front/order/address_form.jsp</result>
+	</action>
+
+	</package>
+</struts>

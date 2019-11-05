@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "struts-2.3.dtd" >
+<struts>
+	<package name="AdminAction"  extends="struts-default">
+		<action name="loginAction" class="com.baizhi.action.AdminAction" method="loginAction">
+		<result name="login" type="redirect">back/main/main.jsp</result>
+		<result name="error" type="redirect">back/login.jsp</result>
+		</action>
+		<action name="getCodes" class="com.baizhi.action.AdminAction" method="getCodes"></action>
+		<action name="invalSessions" class="com.baizhi.action.AdminAction" method="invalSessions">
+		<result name="invalSessionOk" type="redirect">/back/login.jsp</result>
+		</action>
+	</package>
+
+</struts>

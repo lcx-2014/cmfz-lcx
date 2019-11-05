@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "struts-2.3.dtd" >
+<struts>
+	<package name="secondBookAction" extends="struts-default">
+		<action name="secondAction" class="com.baizhi.action.SecondBookAction" method="secondAction">
+		 <result name="secondOk">/front/main/book_list.jsp</result> 
+		 <result name="selectSecondBookOk">/front/main/book_list.jsp</result>
+		</action>
+		<action name="showDetalisBook" class="com.baizhi.action.SecondBookAction" method="showDetalisBook">
+		<result name="showDetalisOk">/front/main/book_detail.jsp</result>
+		</action>
+	</package>
+</struts>

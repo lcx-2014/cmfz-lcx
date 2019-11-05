@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "struts-2.3.dtd" >
+<struts>
+	<package name="orderAction" extends="struts-default">
+	<!-- 配置拦截器 -->
+	<interceptors>
+		<interceptor name="adminInterceptor" class="com.baizhi.interceptor.AdminInterceptor"></interceptor>
+		<!-- 声明拦截器栈 -->
+		<interceptor-stack name="myStack">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="adminInterceptor"></interceptor-ref>
+		</interceptor-stack>
+	</interceptors>
+	<!--  配合全局跳转  -->
+	<global-results>
+			<result name="loginNo" type="redirect">/index.jsp</result>
+	</global-results>
+		<action name="success" class="com.baizhi.action.OrderAction" method="success">
+		<result name="success">/front/order/order_ok.jsp</result>
+		</action>
+		<action name="selectAll" class="com.baizhi.action.OrderAction" method="selectAll">
+		<interceptor-ref name="myStack"></interceptor-ref>
+		<result name="selectAllOk">/back/order/show.jsp</result>
+		</action>
+		<action name="selectItem" class="com.baizhi.action.OrderAction" method="selectItem">
+		 <result name="selectItemOk">/back/order/detail.jsp</result>
+		</action>
+	</package>
+</struts>

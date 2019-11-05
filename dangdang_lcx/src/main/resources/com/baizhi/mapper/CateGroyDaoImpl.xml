@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.CateGroyDao">
+	<resultMap type="com.baizhi.entity.CateGroy" id="rm1">
+		<id column="did" property="id"/>
+		<result column="dname" property="name"/>
+		<result column="dparantId" property="parantId"/>
+		<result column="dlevels" property="levels"/>
+		<association property="categroy" javaType="com.baizhi.entity.CateGroy">
+		<id column="eid" property="id"/>
+		<result column="ename" property="name"/>
+		<result column="eparantId" property="parantId"/>
+		<result column="elevels" property="levels"/>
+		</association>
+	</resultMap>
+  <select id="selectAll" resultMap="rm1">
+   select d.id did,d.name dname,d.parantId dparantId,d.levels dlevels,e.id eid,
+ 	e.name ename,e.parantId eparantId,e.levels elevels from dCateGroy d 
+ 	left join dCateGroy e on d.parantId=e.id 
+  </select>
+  <!--  查询一级类别用于回显  -->
+  <select id="selectCateGroy" resultType="com.baizhi.entity.CateGroy">
+  select id,name,parantId,levels from dCateGroy where levels=1 	 
+  </select>
+  <insert id="insertsecond">
+  insert into dCateGroy values(#{id},#{name},#{parantId},#{levels})
+  </insert>
+  <insert id="insertfirst">
+  insert into dCateGroy values(#{id},#{name},#{parantId,jdbcType=VARCHAR},#{levels})
+  </insert>
+  <delete id="deleteCate">
+  delete from dCateGroy where id=#{id}
+  </delete>
+</mapper>

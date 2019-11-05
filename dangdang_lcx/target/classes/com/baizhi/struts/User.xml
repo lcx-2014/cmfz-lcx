@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "struts-2.3.dtd" >
+<struts>
+	<package name="useraction" extends="struts-default">
+	<!-- 配置拦截器 -->
+	<interceptors>
+		<interceptor name="adminInterceptor" class="com.baizhi.interceptor.AdminInterceptor"></interceptor>
+		<!-- 声明拦截器栈 -->
+		<interceptor-stack name="myStack">
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<interceptor-ref name="adminInterceptor"></interceptor-ref>
+		</interceptor-stack>
+	</interceptors>
+	<!--  配合全局跳转  -->
+	<global-results>
+			<result name="loginNo" type="redirect">/index.jsp</result>
+	</global-results>
+		<action name="registerUser" class="com.baizhi.action.UserAction" method="registerUser">
+		<result name="register" type="redirect">/front/user/verify_form.jsp</result>
+		<result name="error" type="redirect">/front/user/register_form.jsp</result>
+		</action>
+		<action name="updateCode" class="com.baizhi.action.UserAction" method="updateCode">
+		<result name="updateCodeOk" type="redirect">/front/user/register_ok.jsp</result>
+		<result name="err" type="redirect">/front/user/verify_form.jsp</result>
+		</action>
+		<action name="login" class="com.baizhi.action.UserAction" method="login">
+		 <result name="loginOk" type="redirectAction">
+			<param name="namespace">/</param>
+			<param name="actionName">random</param>
+		</result> 
+		<result name="loginerror">/front/user/login_form.jsp</result>
+		</action>
+		<action name="invalSession" class="com.baizhi.action.UserAction" method="invalSession">
+		<result name="invalSessionOk" type="redirect">/front/user/login_form.jsp</result>
+		</action>
+		<action name="selectUser" class="com.baizhi.action.UserAction" method="selectUser">
+		<interceptor-ref name="myStack"></interceptor-ref>
+		<result name="selectOk">/back/user/show.jsp</result>
+		</action>
+		<action name="updateUser" class="com.baizhi.action.UserAction" method="updateUser">
+		<result name="updateOk" type="redirectAction">selectUser</result>
+		</action>
+	</package>
+</struts>
